@@ -1,0 +1,177 @@
+<HTML>
+<HEAD><TITLE>mif.pl Write Routines
+</TITLE>
+</HEAD>
+<BODY>
+<H1><HR><A NAME="28911">Write Routines</A>
+</H1>
+
+       The following routines to write Frame MIF are defined in <A HREF="mif.pl.doc.html#29783">mif.pl</A>:
+<P>
+
+<UL>
+<LI>          main'<A HREF="#35867">MIFwrite_open</A>
+<LI>          main'<A HREF="#31151">MIFwrite_close</A>
+<LI>          main'<A HREF="#14412">MIFwrite_statment</A>
+<LI>          main'<A HREF="#31214">MIFwrite_str_statment</A>
+<LI>          main'<A HREF="#25396">MIFescape_string</A>
+</UL>
+       These routines are purely for convienence. One can output MIF markup directly, 
+       but these routines help hide the underlying syntax of MIF.
+<P>
+
+<PRE>       
+</PRE>
+
+<DL>
+<DT>          <STRONG>Note</STRONG>: 
+
+<DD>              Remember that <STRONG>ALL</STRONG> Perl variables mentioned are defined within the 
+              scope of package <EM>mif</EM> unless statements state/imply otherwise.
+</DL>
+<HR>
+<H2>Routine Descriptions
+</H2>
+
+<H3><A NAME="35867">MIFwrite_open</A>
+</H3>
+
+       <CODE>&amp;'MIFwrite_open(</CODE><VAR>FILEHANDLE</VAR><CODE>, $token, $indent);</CODE> 
+<P>
+
+       <CODE>MIFwrite_open</CODE> outputs the MIF to <VAR>FILEHANDLE</VAR> that opens <CODE>$token</CODE> with a 
+       character indent of <CODE>$indent</CODE>. Example: 
+<P>
+
+<PRE><CODE>&amp;'MIFwrite_open(STDOUT, `Pgf', 5);</CODE> 
+</PRE>
+
+       would output:
+<P>
+
+<PRE>     &lt;Pgf
+</PRE>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="31151">MIFwrite_close</A>
+</H3>
+
+       <CODE>&amp;'MIFwrite_close(</CODE><VAR>FILEHANDLE</VAR><CODE>, $indent);</CODE> 
+<P>
+
+       <CODE>MIFwrite_close</CODE> outputs the MIF to <VAR>FILEHANDLE</VAR> that closes an open token 
+       with a character indent of <CODE>$indent</CODE>. Example:
+<P>
+
+<PRE><CODE>&amp;'MIFwrite_close(STDOUT, 5);</CODE> 
+</PRE>
+
+       would output:
+<P>
+
+<PRE>     &gt;
+</PRE>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="14412">MIFwrite_statment</A>
+</H3>
+
+       <CODE>&amp;'MIFwrite_statement(</CODE><VAR>FILEHANDLE</VAR><CODE>, $token, $data, $indent);</CODE> 
+<P>
+
+       <CODE>MIFwrite_statement</CODE> writes the MIF statement with token <CODE>$token</CODE> and data 
+       <CODE>$data</CODE>. <CODE>$indent</CODE> specifies the character indent of the statement. Example:
+<P>
+
+<PRE><CODE>&amp;'MIFwrite_statement(STDOUT, 'Char', 'HardSpace', 4);</CODE> 
+</PRE>
+
+       would output:
+<P>
+
+<PRE>    &lt;Char HardSpace&gt;
+</PRE>
+
+<PRE>
+</PRE>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="31214">MIFwrite_str_statment</A>
+</H3>
+
+       <CODE>&amp;'MIFwrite_str_statement(</CODE><VAR>FILEHANDLE</VAR><CODE>, $token, $data, 
+       $indent);</CODE> 
+<P>
+
+       <CODE>MIFwrite_str_statement</CODE> writes the MIF string statement with token <CODE>$token</CODE> 
+       and string data <CODE>$data</CODE>. <CODE>$indent</CODE> specifies the character indent of the statement. 
+       Example:
+<P>
+
+<PRE><CODE>&amp;'MIFwrite_str_statement(STDOUT, 'Paraline', 'Hello World!', 4);</CODE> 
+</PRE>
+
+       would output:
+<P>
+
+<PRE>    &lt;Paraline `Hello World!'&gt;
+</PRE>
+
+<PRE>
+</PRE>
+
+       <CODE>MIFwrite_str_statement</CODE> adds the MIF string delimiters for you, so there is no 
+       need to add them yourself to <CODE>$data</CODE>. <CODE>MIFwrite_str_statement</CODE> assumes that 
+       <CODE>$data</CODE> is a valid MIF string. See <A HREF="#25396">MIFescape_string</A> about converting a string to a 
+       valid MIF string.
+<P>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="25396">MIFescape_string</A>
+</H3>
+
+       <CODE>&amp;'MIFescape_string(*str);</CODE> 
+<P>
+
+       <CODE>MIFescape_string</CODE> escapes certain characters in <CODE>*str</CODE> to convert <CODE>*str</CODE> to a 
+       valid MIF string. The following characters are converted:
+<P>
+
+<UL>
+<LI>          '<CODE>\</CODE>' --&gt; '<CODE>\\</CODE>' 
+<LI>          &lt;tab&gt; --&gt; '<CODE> </CODE>' 
+<LI>          '<CODE>&gt;</CODE>' --&gt; '<CODE>\&gt;</CODE>'
+<LI>          '<CODE>'</CODE>' --&gt; '<CODE>\q</CODE>'
+<LI>          '<CODE>`</CODE>' --&gt; '<CODE>\Q</CODE>'
+</UL>
+       Since a pointer to the string variable is passed in, modifications of the string are 
+       preserved after the routine returns. If you want to preserve the original string, you 
+       must make a copy of it before passing it to <CODE>MIFescape_string</CODE>.
+<P>
+
+       As you can see, <CODE>MIFescape_string</CODE> is not really a write routine. The routine 
+       itself does not warrent its own page, and it is normally used in conjunction with 
+       <A HREF="#31214">MIFwrite_str_statment</A>.
+<P>
+
+<PRE>       
+</PRE>
+
+<HR>
+       Go back to <A HREF="mif.pl.doc.html#29783">mif.pl</A>.
+<P>
+
+<HR>
+<ADDRESS>       Earl Hood, ehood@convex.com
+</ADDRESS><ADDRESS>       mif.pl 1.0.0
+</ADDRESS>
+</BODY>
+</HTML>

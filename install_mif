@@ -1,0 +1,74 @@
+#! /bin/csh -f
+#
+# Install script for Perl library 'mif' and associated programs.
+#
+# Look for lines with the string 'CONFIG' for customizing the installation
+# script for your site.
+#
+
+# Set file mask
+umask 022
+
+# Array of files to install in bin directory
+set binfiles = ( \
+    xrgb2mif \
+    edc2html \
+)
+# Array of files to install in perl lib directory
+set libfiles = ( \
+    mif.pl \
+    mif_char.pl \
+    mif_colc.pl \
+    mif_conc.pl \
+    mif_dict.pl \
+    mif_doc.pl \
+    mif_edc.pl \
+    mif_elem.pl \
+    mif_fntc.pl \
+    mif_font.pl \
+    mif_id.pl \
+    mif_pgf.pl \
+    mif_pgfc.pl \
+    mif_rulc.pl \
+    mif_tab.pl \
+    mif_units.pl \
+    mif_varf.pl \
+    mif_views.pl \
+    mif_xrefs.pl \
+)
+
+# CONFIG: $bindir is location of executable programs
+set bindir = '/usr/local/bin'
+
+# CONFIG: $libdir is location of Perl library files
+set libdir = '/usr/local/lib/perl'
+
+# Check if directories exist
+if (! -d $bindir) then
+    echo "$bindir not a directory or non-existent"
+    exit 1
+endif
+if (! -d $libdir) then
+    echo "$libdir not a directory or non-existent"
+    exit 1
+else
+    if (! -e $libdir/mif) then
+	mkdir $libdir/mif
+	/bin/chmod 755 $libdir/mif
+    else if (! -d $libdir/mif) then
+	echo "$libdir/mif not a directory"
+	exit 1
+    endif
+endif
+
+foreach x ($binfiles)
+    echo "Installing $x into $bindir"
+    /bin/cp $x $bindir
+    /bin/chmod 755 $bindir/$x
+end
+cd mif
+foreach x ($libfiles)
+    echo "Installing $x into $libdir/mif"
+    /bin/cp $x $libdir/mif
+    /bin/chmod 644 $libdir/mif/$x
+end

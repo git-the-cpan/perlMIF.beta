@@ -1,0 +1,441 @@
+<HTML>
+<HEAD><TITLE>edc2html
+</TITLE>
+</HEAD>
+<BODY>
+<H1><HR><A NAME="27909">edc2html</A>
+</H1>
+
+       <CODE>edc2html</CODE> is a <A HREF="http://www.cis.ufl.edu/perl/">Perl</A> program that generates an HTML document (composed of 
+       several files) to allow hypertext navigation through a FrameBuilder Element 
+       Catalog specified in a Frame Maker Interchange Format (MIF) file.
+<P>
+
+       It may help the reader to have a basic knowledge of FrameBuilder, the Element 
+       Catalog, and how to export a file to MIF. Knowledge of MIF markup is an added 
+       bonus, but not necessary.
+<P>
+
+<DL>
+<DT>          <STRONG>Note</STRONG>: 
+
+<DD>              Later versions of <CODE>edc2html</CODE> may come out without a public 
+              announcement (especially for bux fix releases). For the latest release and 
+              information on <CODE>edc2html</CODE>, look at my <A HREF="http://www.uci.edu/indiv/ehood/">home page</A> at the University of 
+              California: <EM>Irvine</EM>.
+</DL>
+<PRE>       
+</PRE>
+
+<HR>
+<H2>Description
+</H2>
+
+       <CODE>edc2html</CODE> generates various HTML files for hypertext navigation of a 
+       FrameBuilder Element Catalog. The files generated are as follows:
+<P>
+
+<DL>
+<DT>          <A HREF="#10881">EDC-HOME</A>.<CODE>html</CODE> 
+
+<DD>              This file is the home page of the HTML document. This file contains to the 
+              basic links to start navigating through the Element Catalog. The name of 
+              this file can be changed with the <A HREF="#34673">-homename</A> option.
+</DL>
+<DL>
+<DT>          <A HREF="#22736">TOP-ELEM</A>.<CODE>html</CODE> 
+
+<DD>              This file lists the top-most elements of the Element Catalog, and contains 
+              the links to element pages describing each top-most element. The name of 
+              this file can be changed with the <A HREF="#29159">-topname</A> option.
+</DL>
+<DL>
+<DT>          <A HREF="#32741">ALL-ELEM</A>.<CODE>html</CODE> 
+
+<DD>              This file contains a list of all elements defined in the Element Catalog. This 
+              page allows quick access to any individual element description page. The 
+              name of this file can be changed with the <A HREF="#21286">-allname</A> option.
+</DL>
+<DL>
+<DT>          <A HREF="#40352">element</A>.<CODE>html</CODE> 
+
+<DD>              For each element defined in the Element Catalog, an element description 
+              file is generated with a filename of the element name suffixed by "<CODE>.html</CODE>".
+</DL>
+<DL>
+<DT>          <A HREF="#19236">element.rule</A>.<CODE>html</CODE> 
+
+<DD>              For each element defined in the Element Catalog, a file is generated listing 
+              the content model decleration of the element as declared in the Element 
+              Catalog.
+</DL>
+<PRE>       
+</PRE>
+
+       Once all the files are generated, one needs only to create a link in the Web server 
+       being used to the <A HREF="#10881">EDC-HOME</A> page.
+<P>
+
+<DL>
+<DT>          <STRONG>Note</STRONG> 
+
+<DD>              If you have a Web client that can load local files, than linking the 
+              <A HREF="#10881">EDC-HOME</A> page to the Web server is unnecessary.
+</DL>
+       More information on the content of each file is in the <A HREF="#35292">HTML File Descriptions</A> 
+       section.
+<P>
+
+<HR>
+<H2>Usage
+</H2>
+
+       <CODE>edc2html</CODE> is invoked from a Unix shell, with the following syntax:
+<P>
+
+       <CODE>% edc2html</CODE> [<VAR>options</VAR>] <VAR>filename
+</VAR><P>
+
+       <VAR>filename</VAR> is the FrameBuilder Element Catalog, represented in Frame MIF, to be 
+       parsed for generating the HTML files. The following is the list of options available:
+<P>
+
+<DL>
+<DT>          <A NAME="21286"><CODE>-allname</A></CODE> <VAR>filename</VAR> 
+
+<DD>              Set the filename for file listing all elements in the Element Catalog to 
+              <VAR>filename</VAR>. The default name is "<CODE>ALL-ELEM.html</CODE>".
+</DL>
+<DL>
+<DT>          <CODE>-careful</CODE> 
+
+<DD>              Tells <CODE>edc2html</CODE> to be wary of end-of-line comments and imported data. 
+              Normally, <CODE>edc2html</CODE> assumes that the MIF file has no MIF markup 
+              characters (`<CODE>&lt;</CODE>`, `<CODE>&gt;</CODE>') in end-of-line comments and contains no imported 
+              data. This assumption increases the processing speed of the MIF 
+              considerably. However, if the MIF file you give to <CODE>edc2html</CODE> contains 
+              questionable characters in comments and/or imported data, then specify 
+              this option.
+<P>              The MIF generated directly by FrameBuilder does not have markup 
+              characters in end-of-line comments, so the <CODE>-careful</CODE> option is only 
+              needed if import data is included in the MIF.
+</DL>
+<DL>
+<DT>          <A NAME="14496"><CODE>-descfile</A></CODE> <VAR>filename</VAR> 
+
+<DD>              Use <VAR>filename</VAR> as the source for element descriptions in the Element Catalog. 
+              If this argument is not specified, no description file is used. See <A HREF="#30109">Element 
+              Description File</A> for more information.
+</DL>
+<DL>
+<DT>          <CODE>-docurl</CODE> <VAR>URL</VAR> 
+
+<DD>              Use <VAR>URL</VAR> for location of documentation on <CODE>edc2html</CODE>. The default URL is 
+              "<CODE>edc2html.doc.html</CODE>".
+</DL>
+<DL>
+<DT>          <CODE>-edcname</CODE> <VAR>string</VAR> 
+
+<DD>              Set the name of the Element Catalog to <VAR>string</VAR>. If not specified, <CODE>edc2html</CODE> 
+              determines the name of the Element Catalog by its filename with the 
+              extension stripped off. If reading from standard input, then this argument 
+              should be specified. Otherwise, "Unknown" is used.
+<P>              The string " Element Catalog" will be appended to the name of the 
+              Element Catalog.
+</DL>
+<DL>
+<DT>          <A NAME="24155"><CODE>-elemlist</A></CODE> 
+
+<DD>              Generate a blank element description file (see <A HREF="#30109">Element Description File</A>) to 
+              STDOUT. No HTML files are generated and all other options are ignored 
+              when this option is specified.
+</DL>
+<DL>
+<DT>          <CODE>-help</CODE> 
+
+<DD>              Print out a terse description of all options available. No HTML files are 
+              generated and all other options are ignored when this option is specified.
+</DL>
+<DL>
+<DT>          <A NAME="34673"><CODE>-homename</A></CODE> <VAR>filename</VAR> 
+
+<DD>              Set the filename for the HTML home page for the Element Catalog to 
+              <VAR>filename</VAR>. The default name is "<CODE>EDC-HOME.html</CODE>".
+</DL>
+<DL>
+<DT>          <CODE>-outdir</CODE> <VAR>path</VAR> 
+
+<DD>              Set destination of generated HTML files to <VAR>path</VAR>. Defaults to the current 
+              working directory. 
+</DL>
+<DL>
+<DT>          <A NAME="29159"><CODE>-topname</A></CODE> <VAR>filename</VAR> 
+
+<DD>              Set the filename for file listing the top-most elements in the Element 
+              Catalog to <VAR>filename</VAR>. The default name is "<CODE>TOP-ELEM.html</CODE>".
+</DL>
+<DL>
+<DT>          <CODE>-verbose</CODE> 
+
+<DD>              Print status messages to STDERR of what <CODE>edc2html</CODE> is doing.
+</DL>
+<HR>
+<H2><A NAME="35292">HTML File Descriptions</A>
+</H2>
+
+       <A NAME="32990">All HTML files/pages generated contain hypertext links at the end of the page to </A>
+       the <A HREF="#10881">EDC-HOME</A>, <A HREF="#22736">TOP-ELEM</A>, and <A HREF="#32741">ALL-ELEM</A> pages, unless stated otherwise.
+<P>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="10881">EDC-HOME</A>
+</H3>
+
+       This page is the root of the HTML document. It contains the links to the other main 
+       pages as described <A HREF="#32990">above</A>.
+<P>
+
+       One can add documentation to the home page via the <A HREF="#30109">Element Description File</A> or 
+       by manually editting the file.
+<P>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="22736">TOP-ELEM</A>
+</H3>
+
+       This page contains the list of all top-most elements defined in the Element Catalog. 
+       A top-most element is defined as: <DFN>An element which cannot be contained by another 
+       element or can be only contained by itself.
+</DFN><P>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="32741">ALL-ELEM</A>
+</H3>
+
+       This page contains a list of all elements defined in the Element Catalog.
+<P>
+
+<PRE>       
+</PRE>
+
+<H3><A NAME="10323"><VAR></A><A NAME="40352">element</A></VAR> 
+</H3>
+
+       <VAR>element</VAR>.<CODE>html</CODE> is the file describing the content of <VAR>element</VAR>. The <VAR>element</VAR> page is 
+       divided into the following sections:
+<P>
+
+<UL>
+<LI>          <VAR>element</VAR> description (optional, see <A HREF="#30109">Element Description File</A>).
+<LI>          Links to subelements broken into three parts:
+<UL>
+<LI>                 Base content
+<LI>                 Inclusions (if defined)
+<LI>                 Exclusions (if defined)
+</UL>
+<LI>          Element type. The following element types are possible:
+<UL>
+<LI>                 Anchored Frame
+<LI>                 Container
+<LI>                 Cross-reference
+<LI>                 Empty
+<LI>                 Empty Paragraph
+<LI>                 Imported Graphic Object
+<LI>                 Marker
+<LI>                 Math Equation
+<LI>                 Table
+<LI>                 Variable
+</UL>
+<LI>          Link to general rule (<A HREF="#39115">element.rule</A>) page.
+<LI>          Statement if element may be highest in a flow.
+<LI>          Links to all possible parent elements.
+<LI>          Links to main pages as described <A HREF="#32990">above</A>.
+</UL>
+<PRE>       
+</PRE>
+
+<DL>
+<DT>          <STRONG><A NAME="35960">Special Note</A></STRONG> 
+
+<DD>              Frame element names are case-sensitive and may contain spaces. 
+              Therefore, the filenames appear in the same lettercase as the element 
+              name, and spaces are converted into commas. <EM>Example</EM>: An element called 
+              "<CODE>Foo Bar</CODE>" will have its element page filename called "<CODE>Foo,Bar.html</CODE>". 
+              The same convention applies to the <A HREF="#39115">element.rule</A> page.
+</DL>
+<PRE>       
+</PRE>
+
+<H3><VAR><A NAME="39115"></A><A NAME="19236">element</A></VAR>.rule 
+</H3>
+
+       <VAR>element</VAR>.<CODE>rule.html</CODE> is the file giving the <VAR>element</VAR>'s general rule as it appears in the 
+       Element Catalog. The <VAR>element</VAR>.rule page is divided into the following sections:
+<P>
+
+<UL>
+<LI>          General rule.
+<LI>          Inclusion elements (if defined).
+<LI>          Exclusion elements (if defined).
+<LI>          Link back to <A HREF="#40352">element</A> page.
+</UL>
+       This page is not created if <VAR>element</VAR>'s type implies an empty general rule.
+<P>
+
+       See <A HREF="#35960">Special Note</A> in the <A HREF="#10323">element</A> page description on the actual filename of the 
+       <VAR>element</VAR>.rule page.
+<P>
+
+<PRE>       
+</PRE>
+
+<HR>
+<H2><A NAME="30109">Element Description File</A>
+</H2>
+
+       <CODE>edc2html</CODE> supports the ability to add documentation to the HTML files generated 
+       from an Element Catalog through the <A HREF="#14496">-descfile</A> option.
+<P>
+
+       The basic syntax of the description file is as follows:
+<P>
+
+<PRE>         &lt;?EDC2HTML <VAR>identifier</VAR>&gt;<BR>
+         Description of <VAR>identifier</VAR> here.<BR>
+         &lt;P&gt;<BR>
+         &lt;?EDC2HTML <VAR>identifier</VAR>&gt;<BR>
+         Description of <VAR>identifier</VAR> here.<BR>
+         &lt;P&gt;<BR>
+         ...
+</PRE>
+
+<PRE>       
+</PRE>
+
+       The line <CODE>&lt;?EDC2HTML </CODE><VAR>identifier</VAR><CODE>&gt;</CODE> signifies the beginning of the description 
+       text. All text up to the next <CODE>&lt;?EDC2HTML </CODE><VAR>identifier</VAR><CODE>&gt;</CODE> line or end-of-file is used 
+       as the <VAR>identifier</VAR> description.
+<P>
+
+       The <VAR>identifier</VAR> can be one of the following formats:
+<P>
+
+<DL>
+<DT>          <VAR>element</VAR> 
+
+<DD>              An <VAR>element</VAR> name in the Element Catalog. The following description text 
+              will go at the top of the <VAR>element</VAR>'s page.
+</DL>
+<DL>
+<DT>          <VAR>identifier</VAR><CODE>,</CODE><VAR>identifier</VAR><CODE>,</CODE>... 
+
+<DD>              A sequence of <VAR>identifier</VAR>s separated by commas, `<CODE>,</CODE>'. This allows a 
+              description to be shared among muliple identifiers. <STRONG>NOTE</STRONG>: there should 
+              be <STRONG>NO</STRONG> whitespace between the identifiers and the commas.
+</DL>
+<PRE>       
+</PRE>
+
+       If the special element, <CODE>-HOME-</CODE>, is specified in the description file, then its 
+       description text will be put on the <A HREF="#10881">EDC-HOME</A> page.
+<P>
+
+       SGML comments are also supported in the description file. Comments are skipped 
+       by <CODE>edc2html</CODE>. The syntax for a comment is the following:
+<P>
+
+<PRE>         &lt;!-- This is a comment --&gt;
+</PRE>
+
+<DL>
+<DT>          <STRONG>Warning</STRONG> 
+
+<DD>              <CODE>edc2html</CODE> can only handle a comment that spans a single line (to make 
+              the parsing simple). Therefore, the following will cause <CODE>edc2html</CODE> to add 
+              the comment text beyond the first line of the comment to an element 
+              description:
+</DL>
+<PRE>         &lt;!-- This is a comment<BR>
+              that spans more than one line.<BR>
+           --&gt;<BR>
+
+</PRE>
+
+       If you want to put line breaks in the description file without them being applied to 
+       an element description, then use the SGML short comment: <CODE>&lt;!&gt;</CODE>.
+<P>
+
+<PRE>       
+</PRE>
+
+       The description text can be any valid HTML markup. It is recommended to end 
+       each description with the &lt;P&gt; tag so the description is separated from any other 
+       HTML markup generated by <CODE>edc2html</CODE>.
+<P>
+
+       Example:
+<P>
+
+<PRE>
+</PRE>
+
+<PRE>       
+</PRE>
+
+       <STRONG>Miscellaneous Notes</STRONG>: 
+<P>
+
+<UL>
+<LI>          If duplicate descriptions exist, the latest one defined is used.
+<P><LI>          <CODE>edc2html</CODE> ignores element descriptions that contain only the &lt;P&gt; tag.
+<P><LI>          To get started with a description file for an Element Catalog, one can use 
+              the <A HREF="#24155">-elemlist</A> option to <CODE>edc2html</CODE> to generate a file with all elements 
+              Element Catalog with empty descriptions (i.e they only contain the &lt;P&gt; 
+              tag).
+<P><LI>          Element descriptions are not possible for element names with beginning 
+              and/or trailing whitespaces.
+<P></UL>
+<PRE>       
+</PRE>
+
+<HR>
+<H2>Tips
+</H2>
+
+<UL>
+<LI>          <CODE>edc2html</CODE> only cares about the Element Catalog, "<CODE>&lt;ElementCatalog 
+              </CODE>...<CODE>&gt;</CODE>", statement in the MIF file. Therefore, it is best to give <CODE>edc2html</CODE> a MIF 
+              file that defines an empty document so unnecessary processing is avoided. 
+              Actually, all you need is a file with only the Element Catalog statement.
+<P><LI>          Do not give the EDD to <CODE>edc2html</CODE>. You will only get the information of 
+              the elements defined for EDD editting/generation. Of course, if you 
+              interested in the Element Catalog used in EDDs ...
+<P></UL>
+<HR>
+<H2>See Also
+</H2>
+
+<DL>
+<DT>          <A HREF="mif.pl.doc.html#29783">mif.pl</A> 
+
+<DD>              A Perl library to parse Frame MIF.
+</DL>
+<DL>
+<DT>          <A HREF="dtd2html.doc.html#27909">dtd2html</A>
+
+<DD>              A Perl program to generate an HTML document to allow people to 
+              navigate through the structure of an SGML DTD.
+</DL>
+<HR>
+<ADDRESS>       Earl Hood, ehood@convex.com
+</ADDRESS><ADDRESS>       edc2html 1.0.0
+</ADDRESS><ADDRESS>       
+</ADDRESS>
+</BODY>
+</HTML>

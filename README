@@ -1,0 +1,111 @@
+README
+
+This is the distribution of Perl program(s) and library(s) dealing with
+Frame MIF.
+
+---------------------------------------------------------------------------
+    Copyright (C) 1994  Earl Hood, ehood@convex.com
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+---------------------------------------------------------------------------
+
+CONTENTS of distribution:
+
+CHANGES.edc2html  Revision history of edc2html
+CHANGES.mif.pl	  Revision history of mif.pl
+COPYING		  GNU General Public License
+HPTagEDC/	  Directory containing example output of edc2html
+README		  The file you are reading
+doc/		  Documentation
+mif/		  Location of Perl libraries
+edc2html*	  Perl program to create HTML files to navigate an FrameBuilder
+		  Element Catalog
+files/		  MIF files and other input/output files to programs
+install_mif*	  Installation (csh) script
+xrgb2mif*	  Program to convert an rgb.txt style file to a Color Catalog
+
+
+---------------------------------------------------------------------------
+INSTALLATION
+
+For installation, do the following:
+
+	1. Read and edit the csh script, install_mif.
+	2. Run install_mif.
+
+You might have to run the script as root.
+
+    Note:
+	The Perl programs might need the first line editted to point
+	to the location of the Perl interpreter at your site.  By 
+	default, the programs assume /usr/local/bin/perl.
+
+See NOTES below for further information.
+    
+---------------------------------------------------------------------------
+DOCUMENTATION
+
+Documentation is located in the directory doc/.  The documentation is in
+FrameMaker 4.0 and HTML.  Reading the files in doc/ should get you
+started on how to the programs.
+
+** All the mif.pl extension libraries still need to be documented. **
+
+Files with just the ".doc" extension are in Frame 4.0.  The ".doc.html"
+files are the Frame files converted to HTML.
+
+I put considerable time in documenting the tools, so pleeeease read
+them :-)
+
+If you have a Web client like Mosaic, you can load the HTML files into
+the viewer for reading.  The HTML files contain cross-references (that
+hopefully help in describing things) to each other.
+
+---------------------------------------------------------------------------
+NOTES
+
+ o  The Perl programs make use of the file "mif.pl" and other libraries
+    in the mif/ directory.  The installation script trys to install the
+    files in a standard Perl library location in a sub-directory called
+    "mif".  However, if you install it in a location that Perl does not
+    look for when requiring files, then make sure you set the PERLLIB
+    environment variable.
+
+ o  The HPTagEDC/ directory contains the HTML conversion of the HPTag
+    Element Catalog.  This is the Frame quivalent to the OpenBook DTD.
+    The file "files/HPTagEDC.desc" is the element description file used
+    for the HPTag Element Catalog.  See documentation on edc2html for
+    more information on element description files.
+
+ o  mif.pl is the guts of everything.  I tried to write it so it can be
+    used in any Perl program dealing with Frame MIF.  All the other
+    mif_*.pl libraries just hook in callbacks into mif.pl to do their
+    job.
+    
+    If you come up with a nifty program that uses mif.pl, please drop
+    me a message.  I'd like to see if others are making any use of it.
+
+---------------------------------------------------------------------------
+BUGS/COMMENTS/SUGGESTIONS?
+
+    If you have any bugs/comments/suggestions, feel free to drop me
+    an e-mail message at ehood@convex.com.
+
+    If you have questions on what the tools can, or cannot do, please
+    read the documnetation first.  If the docs do not answer your
+    question(s), feel free to e-mail me.
+
+---------------------------------------------------------------------------
+Earl Hood, ehood@convex.com

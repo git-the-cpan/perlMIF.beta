@@ -1,0 +1,69 @@
+<HTML>
+<HEAD><TITLE>mif.pl
+</TITLE>
+</HEAD>
+<BODY>
+<H1><HR><A NAME="29783">mif.pl</A>
+</H1>
+
+       A <A HREF="http://www.cis.ufl.edu/perl/">Perl</A> library that parses <EM>Frame Maker Interchange Format</EM> (MIF).
+<P>
+
+<HR>
+<H2>Audience
+</H2>
+
+       I assume the reader knows about the scope of packages and how to access 
+       variables/subroutines defined in packages.  If not, refer to <EM>perl</EM>(1) or any book on 
+       Perl.
+<P>
+
+       The reader should be familiar with MIF. If not, refer to FrameMaker/Builder 
+       documentation.
+<P>
+
+       Unless stated otherwise, <STRONG>ALL</STRONG> Perl variables mentioned are within the scope of 
+       package <EM>mif</EM>. 
+<P>
+
+<HR>
+<H2>Usage
+</H2>
+
+       If installed correctly, the following Perl statement can be used to access the <EM>mif 
+       </EM>library routines:
+<P>
+
+       <CODE>require "mif/mif.pl";
+</CODE><P>
+
+       The following routines are defined:
+<P>
+
+<H3><A HREF="mif_read_routines.doc.html#26605">Read Routines</A>
+</H3>
+
+<UL>
+<LI>          main'<A HREF="mif_read_routines.doc.html#19647">MIFread_mif</A>
+              The heart of the mif.pl library. <CODE>MIFread_mif</CODE> breaks down the MIF into 
+              "token/data" components, and then calls registered token callback 
+              routines defined by the library user to process the data portion of the MIF.
+<P>
+
+</UL>
+<H3><A HREF="mif_write_routines.doc.html#28911">Write Routines</A>
+</H3>
+
+<UL>
+<LI>          main'<A HREF="mif_write_routines.doc.html#35867">MIFwrite_open</A>
+<LI>          main'<A HREF="mif_write_routines.doc.html#31151">MIFwrite_close</A>
+<LI>          main'<A HREF="mif_write_routines.doc.html#14412">MIFwrite_statment</A>
+<LI>          main'<A HREF="mif_write_routines.doc.html#31214">MIFwrite_str_statment</A>
+<LI>          main'<A HREF="mif_write_routines.doc.html#25396">MIFescape_string</A>
+</UL>
+<HR>
+<ADDRESS>       Earl Hood, ehood@convex.com
+</ADDRESS><ADDRESS>       mif.pl 1.0.0
+</ADDRESS>
+</BODY>
+</HTML>

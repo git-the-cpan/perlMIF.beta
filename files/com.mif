@@ -1,0 +1,28 @@
+<TextFlow 
+ <TFTag `A'>
+ <TFAutoConnect Yes >
+ <Notes 
+ > # end of Notes
+ <Para 
+  <Unique 427032>
+  <PgfTag # `Body'>
+            `Body'>
+  <ParaLine 
+   <TextRectID 7>
+   <String `This is a test. ###### of ######'>  # Hello <<<<<<>>>
+  >
+ > # end of Para
+ <Para 
+  <Unique 427033>
+  <PgfTag `Body'>	# `Test' >
+  <ParaLine 
+  >
+ > # end of Para
+> # end of TextFlow
+#
+# <String `###### of ######'>  # Hello
+<Comment - This is a <Comment> statement
+<Font <FBold> <FItalic>>
+# Hello
+# Goodbye
+> # end of <Comment>

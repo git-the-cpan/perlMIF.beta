@@ -1,0 +1,357 @@
+<?EDC2HTML -home- >
+The HPTag element catalog is the the FrameBuilder equivalent to the
+OpenBook DTD.  The HPTag Frame filter is used to convert HPTag
+FrameBuilder documents into OpenBook SGML documents.
+<P>
+<?EDC2HTML AbstractSection >
+<P>
+<?EDC2HTML Acronym >
+<P>
+<?EDC2HTML All >
+<P>
+<?EDC2HTML Appendix >
+<P>
+<?EDC2HTML Author >
+<P>
+<?EDC2HTML BookTitle >
+<P>
+<?EDC2HTML Bottom >
+<P>
+<?EDC2HTML BridgeHead >
+<P>
+<?EDC2HTML CDROM >
+<P>
+<?EDC2HTML CNo >
+<P>
+<?EDC2HTML CYes >
+<P>
+<?EDC2HTML Caution >
+<P>
+<?EDC2HTML Chapter >
+<P>
+<?EDC2HTML Conditionals >
+<P>
+<?EDC2HTML ConventionsSection >
+<P>
+<?EDC2HTML Copyright >
+<P>
+<?EDC2HTML Country >
+<P>
+<?EDC2HTML CrossReference >
+<P>
+<?EDC2HTML Current >
+<P>
+<?EDC2HTML Cursor >
+<P>
+<?EDC2HTML Description >
+<P>
+<?EDC2HTML Draft >
+<P>
+<?EDC2HTML Edition >
+<P>
+<?EDC2HTML Equation >
+<P>
+<?EDC2HTML EquationInLine >
+<P>
+<?EDC2HTML ExampleAnnotation >
+<P>
+<?EDC2HTML ExampleBlock >
+<P>
+<?EDC2HTML ExampleBlockVerbatim >
+<P>
+<?EDC2HTML ExampleSegment >
+<P>
+<?EDC2HTML ExternalAppLoc >
+<P>
+<?EDC2HTML ExternalDocLoc >
+<P>
+<?EDC2HTML ExternalFileLoc >
+<P>
+<?EDC2HTML ExternalManPageLoc >
+<P>
+<?EDC2HTML ExternalObjectInfo >
+<P>
+<?EDC2HTML ExternalObjects >
+<P>
+<?EDC2HTML ExternalQuery >
+<P>
+<?EDC2HTML ExternalSystemLoc >
+<P>
+<?EDC2HTML FicheNumber >
+<P>
+<?EDC2HTML FigureArt >
+<P>
+<?EDC2HTML FigureArtInfo >
+<P>
+<?EDC2HTML FigureArtwork >
+<P>
+<?EDC2HTML FigureCaption >
+<P>
+<?EDC2HTML FigureFrame >
+<P>
+<?EDC2HTML FigureText >
+<P>
+<?EDC2HTML FillInBlank >
+<P>
+<?EDC2HTML Final >
+<P>
+<?EDC2HTML Footnote >
+<P>
+<?EDC2HTML Frame >
+<P>
+<?EDC2HTML Glossary >
+<P>
+<?EDC2HTML GlossaryDefinition >
+<P>
+<?EDC2HTML GlossaryTerm >
+<P>
+<?EDC2HTML Graphic >
+<P>
+<?EDC2HTML GraphicInLine >
+<P>
+<?EDC2HTML HNo >
+<P>
+<?EDC2HTML HPTag >
+<P>
+<?EDC2HTML HPTagAttributes >
+<P>
+<?EDC2HTML HYes >
+<P>
+<?EDC2HTML Hardcopy >
+<P>
+<?EDC2HTML Hardware >
+<P>
+<?EDC2HTML HardwareSubcategory >
+<P>
+<?EDC2HTML Head >
+<P>
+<?EDC2HTML HeadAbbrev >
+<P>
+<?EDC2HTML Help >
+<P>
+<?EDC2HTML History >
+<P>
+<?EDC2HTML HomeTopic >
+<P>
+<?EDC2HTML IDSection >
+<P>
+<?EDC2HTML Id >
+<P>
+<?EDC2HTML IndexToken >
+<P>
+<?EDC2HTML Introduction >
+<P>
+<?EDC2HTML Item >
+<P>
+<?EDC2HTML Keycap >
+<P>
+<?EDC2HTML LabeledList >
+<P>
+<?EDC2HTML LabeledListHeads >
+<P>
+<?EDC2HTML LabeledListLabel >
+<P>
+<?EDC2HTML LabeledListText >
+<P>
+<?EDC2HTML LabeledListTight >
+<P>
+<?EDC2HTML LabeledListWide >
+<P>
+<?EDC2HTML LabeledListWideTight >
+<P>
+<?EDC2HTML Language >
+<P>
+<?EDC2HTML Legal >
+<P>
+<?EDC2HTML Link >
+<P>
+<?EDC2HTML Linkinfo >
+<P>
+<?EDC2HTML List >
+<P>
+<?EDC2HTML ListArabic >
+<P>
+<?EDC2HTML ListBullet >
+<P>
+<?EDC2HTML ListCheck >
+<P>
+<?EDC2HTML ListContinue >
+<P>
+<?EDC2HTML ListLalpha >
+<P>
+<?EDC2HTML ListLroman >
+<P>
+<?EDC2HTML ListOrder >
+<P>
+<?EDC2HTML ListPlain >
+<P>
+<?EDC2HTML ListUalpha >
+<P>
+<?EDC2HTML ListUroman >
+<P>
+<?EDC2HTML Location >
+<P>
+<?EDC2HTML Loose >
+<P>
+<?EDC2HTML MNo >
+<P>
+<?EDC2HTML MYes >
+<P>
+<?EDC2HTML Map >
+<P>
+<?EDC2HTML Memo >
+<P>
+<?EDC2HTML Message >
+<P>
+<?EDC2HTML MessageExplanation >
+<P>
+<?EDC2HTML MessageNumber >
+<P>
+<?EDC2HTML MessageSection >
+<P>
+<?EDC2HTML MessageSubsection >
+<P>
+<?EDC2HTML MessageText >
+<P>
+<?EDC2HTML MetaInformation >
+<P>
+<?EDC2HTML MfgNumber >
+<P>
+<?EDC2HTML MiscMeta >
+<P>
+<?EDC2HTML New >
+<P>
+<?EDC2HTML None >
+<P>
+<?EDC2HTML Not >
+<P>
+<?EDC2HTML Note >
+<P>
+<?EDC2HTML NoteCauWarnText >
+<P>
+<?EDC2HTML ObjectID >
+<P>
+<?EDC2HTML PNo >
+<P>
+<?EDC2HTML PYes >
+<P>
+<?EDC2HTML Para >
+<P>
+<?EDC2HTML ParaNoWrap >
+<P>
+<?EDC2HTML Parameter >
+<P>
+<?EDC2HTML Part >
+<P>
+<?EDC2HTML PartNumber >
+<P>
+<?EDC2HTML Popup >
+<P>
+<?EDC2HTML Preface >
+<P>
+<?EDC2HTML PrintDate >
+<P>
+<?EDC2HTML Product >
+<P>
+<?EDC2HTML ReferenceSection >
+<P>
+<?EDC2HTML ReferenceSubsection >
+<P>
+<?EDC2HTML Reviewer >
+<P>
+<?EDC2HTML ReviewerSet >
+<P>
+<?EDC2HTML Revision >
+<P>
+<?EDC2HTML Rid >
+<P>
+<?EDC2HTML Safety >
+<P>
+<?EDC2HTML Section >
+<P>
+<?EDC2HTML SerialNumber >
+<P>
+<?EDC2HTML Sides >
+<P>
+<?EDC2HTML Softkey >
+<P>
+<?EDC2HTML Source >
+<P>
+<?EDC2HTML Status >
+<P>
+<?EDC2HTML Subscript >
+<P>
+<?EDC2HTML Subsection1 >
+<P>
+<?EDC2HTML Subsection2 >
+<P>
+<?EDC2HTML Subsection3 >
+<P>
+<?EDC2HTML Subsection4 >
+<P>
+<?EDC2HTML Subsection5 >
+<P>
+<?EDC2HTML Subsection6 >
+<P>
+<?EDC2HTML Subsection7 >
+<P>
+<?EDC2HTML Subsection8 >
+<P>
+<?EDC2HTML Superscript >
+<P>
+<?EDC2HTML Supplement >
+<P>
+<?EDC2HTML Symbols >
+<P>
+<?EDC2HTML SyntaxDiagram >
+<P>
+<?EDC2HTML Table >
+<P>
+<?EDC2HTML TableCaption >
+<P>
+<?EDC2HTML TableContents >
+<P>
+<?EDC2HTML Term >
+<P>
+<?EDC2HTML Test >
+<P>
+<?EDC2HTML Tight >
+<P>
+<?EDC2HTML Title >
+<P>
+<?EDC2HTML Top >
+<P>
+<?EDC2HTML TopBottom >
+<P>
+<?EDC2HTML Variable >
+<P>
+<?EDC2HTML Version >
+<P>
+<?EDC2HTML VoiceComputer >
+<P>
+<?EDC2HTML VoiceDisplay >
+<P>
+<?EDC2HTML VoiceEmphasis >
+<P>
+<?EDC2HTML VoiceUser >
+<P>
+<?EDC2HTML Volume >
+<P>
+<?EDC2HTML Warning >
+<P>
+<?EDC2HTML Window >
+<P>
+<?EDC2HTML XManCmd >
+<P>
+<?EDC2HTML XOffset >
+<P>
+<?EDC2HTML XRid >
+<P>
+<?EDC2HTML XSysCmd >
+<P>
+<?EDC2HTML XcbData >
+<P>
+<?EDC2HTML XcbType >
+<P>
+<?EDC2HTML XfsSpec >
+<P>

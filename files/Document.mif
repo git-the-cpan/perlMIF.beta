@@ -1,0 +1,104 @@
+<Document 
+ <DViewRect 163 22 540 648 >
+ <DWindowRect 193 3 764 967 >
+ <DViewScale  100.0%>
+ <DNextUnique 212262>
+ <DPageSize  7.5" 9.0">
+ <DStartPage 1>
+ <DPageNumStyle Arabic >
+ <DPagePointStyle Arabic >
+ <DTwoSides No >
+ <DParity FirstRight >
+ <DFrozenPages No >
+ <DPageRounding DeleteEmptyPages >
+ <DMaxInterLine  2.0 pt>
+ <DMaxInterPgf  6.0 pt>
+ <DFNoteMaxH  4.0">
+ <FNoteStartNum 1>
+ <DFNoteRestart PerPage >
+ <DFNoteTag `Footnote'>
+ <DFNoteLabels `*\xa0 \xe0 '>
+ <DFNoteNumStyle Arabic >
+ <DFNoteAnchorPos FNSuperscript >
+ <DFNoteNumberPos FNBaseline >
+ <DFNoteAnchorPrefix `'>
+ <DFNoteAnchorSuffix `'>
+ <DFNoteNumberPrefix `'>
+ <DFNoteNumberSuffix `.\\t'>
+ <DTblFNoteTag `TableFootnote'>
+ <DTblFNoteLabels `*\xa0 \xe0 '>
+ <DTblFNoteNumStyle LCAlpha >
+ <DTblFNoteAnchorPos FNSuperscript >
+ <DTblFNoteNumberPos FNBaseline >
+ <DTblFNoteAnchorPrefix `'>
+ <DTblFNoteAnchorSuffix `'>
+ <DTblFNoteNumberPrefix `'>
+ <DTblFNoteNumberSuffix `.\\t'>
+ <DLinebreakChars `/ - \xd0  \xd1 '>
+ <DPunctuationChars `:;,.\xc9 !?'>
+ <DChBarGap  0.25">
+ <DChBarWidth  2.0 pt>
+ <DChBarPosition LeftOfCol >
+ <DChBarColor `Black'>
+ <DAutoChBars No >
+ <DShowAllConditions Yes >
+ <DDisplayOverrides Yes >
+ <DViewOnly No >
+ <DViewOnlyXRef GotoBehavior >
+ <DViewOnlySelect Yes >
+ <DViewOnlyWinBorders Yes >
+ <DViewOnlyWinMenubar Yes >
+ <DViewOnlyWinPopup Yes >
+ <DViewOnlyWinPalette No >
+ <DGridOn No >
+ <DPageGrid  0.5">
+ <DSnapGrid  0.125">
+ <DSnapRotation  0.25>
+ <DRulersOn Yes >
+ <DFullRulers Yes >
+ <DGraphicsOff No >
+ <DCurrentView 1>
+ <DBordersOn Yes >
+ <DSymbolsOn No >
+ <DElementBordersOn No >
+ <DSmartQuotesOn Yes >
+ <DSmartSpacesOn No >
+ <DLanguage USEnglish >
+ <DSuperscriptSize  80.0%>
+ <DSubscriptSize  80.0%>
+ <DSmallCapsSize  80.0%>
+ <DSuperscriptShift  40.0%>
+ <DSubscriptShift  25.0%>
+ <DMathAlphaCharFontFamily `Times'>
+ <DMathSmallIntegral  14.0 pt>
+ <DMathMediumIntegral  18.0 pt>
+ <DMathLargeIntegral  24.0 pt>
+ <DMathSmallSigma  14.0 pt>
+ <DMathMediumSigma  18.0 pt>
+ <DMathLargeSigma  24.0 pt>
+ <DMathSmallLevel1  9.0 pt>
+ <DMathMediumLevel1  12.0 pt>
+ <DMathLargeLevel1  12.0 pt>
+ <DMathSmallLevel2  7.0 pt>
+ <DMathMediumLevel2  9.0 pt>
+ <DMathLargeLevel2  10.0 pt>
+ <DMathSmallLevel3  5.0 pt>
+ <DMathMediumLevel3  6.0 pt>
+ <DMathLargeLevel3  7.0 pt>
+ <DMathSmallHoriz  0.0 pt>
+ <DMathMediumHoriz  0.0 pt>
+ <DMathLargeHoriz  0.0 pt>
+ <DMathSmallVert  0.0 pt>
+ <DMathMediumVert  0.0 pt>
+ <DMathLargeVert  0.0 pt>
+ <DMathShowCustom No >
+ <DMathFunctions `'>
+ <DMathNumbers `'>
+ <DMathVariables `EquationVariables'>
+ <DMathStrings `'>
+ <DMathGreek `'>
+  <DMathCatalog >
+ <DElementCatalogScope Strict >
+ <DPrintSkipBlankPages Yes >
+ <DPrintSeparations No >
+> # end of Document

@@ -1,0 +1,503 @@
+#! /usr/local/bin/perl
+##---------------------------------------------------------------------------##
+##  File:
+##      edc2html
+##  Author:
+##      Earl Hood       ehood@convex.com
+##  Description:
+##	edc2html is a Perl program to generate HTML documents to allow
+##	people to navigate thru a FrameBuilder element catalog.  This
+##	program requires the use of the "mif" package.
+##---------------------------------------------------------------------------##
+##  Copyright (C) 1994	Earl Hood, ehood@convex.com
+##
+##  This program is free software; you can redistribute it and/or modify
+##  it under the terms of the GNU General Public License as published by
+##  the Free Software Foundation; either version 2 of the License, or
+##  (at your option) any later version.
+##  
+##  This program is distributed in the hope that it will be useful,
+##  but WITHOUT ANY WARRANTY; without even the implied warranty of
+##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##  GNU General Public License for more details.
+##  
+##  You should have received a copy of the GNU General Public License
+##  along with this program; if not, write to the Free Software
+##  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+##---------------------------------------------------------------------------##
+
+package main;
+
+##---------------------------------------------------------------------------##
+
+## Store name of program ##
+($PROG = $0) =~ s/.*\///;
+
+$VERSION = "1.0.0";
+
+$HomeDesc = "-home-";
+%ElemDesc = ();		# Associative array of element descriptions
+%Type = (
+    'EDAFrame', 'Anchored Frame',
+    'EDContainer', 'Container',
+    'EDEmpty', 'Empty',
+    'EDEmptyPgf', 'Empty Paragraph',
+    'EDEquation', 'Math Equation',
+    'EDImportedObject', 'Imported Graphic Object',
+    'EDMarker', 'Marker',
+    'EDTable', 'Table',
+    'EDVariable', 'Variable',
+    'EDXRef', 'Cross-reference',
+);
+
+## Require libraries ##
+unshift(@INC, '.');
+require "mif/mif.pl" || die "Unable to require mif.pl\n";
+require "mif/mif_edc.pl" || die "Unable to require mif_edc.pl\n";
+require "newgetopt.pl" || die "Unable to require newgetopt.pl\n";
+
+##---------------------------------------------------------------------------##
+			    ##------------##
+			    ## MAIN BLOCK ##
+			    ##------------##
+&get_cli_opts();
+
+&MIFread_mif($MIF);
+
+if ($ELEMLIST) { &print_elemdesc(); exit 0; }
+&read_descfile();
+&write_home_page();
+&write_topelem_page();
+&write_allelem_page();
+foreach (&MIFget_elements()) {
+    &write_elem_page($_);
+}
+
+exit 0;
+			    ##----------##
+			    ## END MAIN ##
+			    ##----------##
+
+##---------------------------------------------------------------------------##
+##				SubRoutines				     ##
+##---------------------------------------------------------------------------##
+sub get_cli_opts {
+    local($tmp);
+    &usage() unless
+    &NGetOpt(
+	"careful",	# Strip comments out in MIF
+	"descfile=s",	# Element description file
+	"docurl=s",	# URL to edc2html HTML document
+	"outdir=s",	# Destination directory for files
+	"edcname=s",	# Name of element catalog
+	"homename=s",	# Name of home page
+	"topname=s",	# Name of top element list page
+	"allname=s",	# Name of all element list page
+	"elemlist",	# Flag to generate empty element list
+	"help"		# Print usage
+    );
+    &usage() if defined($opt_help);
+
+    $MIFFILE  = ($ARGV[0] ? $ARGV[0] : "");
+    $DESCFILE = ($opt_descfile ? $opt_descfile : "");
+    $DOCURL   = ($opt_docurl ? $opt_docurl : "edc2html.doc.html");
+    $OUTDIR   = ($opt_outdir ? $opt_outdir : ".");
+    $EDCNAME  = ($opt_edcname ? $opt_edcname : "");
+    $HOMEFILE = ($opt_homename ? $opt_homename : "EDC-HOME.html");
+    $TOPFILE  = ($opt_topname ? $opt_topname : "TOP-ELEM.html");
+    $ALLFILE  = ($opt_allname ? $opt_allname : "ALL-ELEM.html");
+    $ELEMLIST = (defined($opt_elemlist) ? 1 : 0);
+
+    if (!defined($opt_careful)) {
+	$mif'fast = 1;
+	$mif'no_import_data = 1;
+    }
+ 
+    if ($MIFFILE) {
+	open(MIF_FILE, "< $MIFFILE") || die "Unable to open $MIFFILE\n";
+	$MIF = "main'MIF_FILE";
+    } else {
+	$MIF = 'STDIN';
+    }
+    if (! $EDCNAME) {
+	if ($MIFFILE) {
+	    $EDCNAME = $MIFFILE;
+	    $EDCNAME =~ s/.*\///;  $EDCNAME =~ s/^(.*)\..*$/\1/;
+	} else {
+	    $EDCNAME = 'Unknown';
+	}
+    }
+    $EDCNAME .= ' Element Catalog';
+    $MIFFILE = 'MIF' unless $MIFFILE;
+}
+##---------------------------------------------------------------------------##
+sub read_descfile {
+    return unless $DESCFILE;
+    open(FILE, "< $DESCFILE") ||
+	(warn "Unable to open $DESCFILE\n" && return);
+    
+    local(@elem, $txt);
+    while(<FILE>) {
+	next if /^\s*<!/;	# Skip comments
+	if (/^\s*<\?\s*EDC2HTML\s+(.+)>\s*$/) {
+	    $1 =~ s/\s*$//;
+	    foreach (@elem) {
+		$ElemDesc{$_} = $txt
+		    if $_ && $txt !~ /^\s*<P>\s*$/;
+	    }
+	    @elem = split(/,/, $1);
+	    $txt = "";
+	} else {
+	    $txt .= $_;
+	}
+    }
+    foreach (@elem) {
+	$ElemDesc{$_} = $txt
+	    if $_ && $txt !~ /^\s*<P>\s*$/;
+    }
+
+    close(FILE);
+}
+##---------------------------------------------------------------------------##
+sub write_home_page {
+    open(PGFILE, "> $OUTDIR/$HOMEFILE") ||
+	die "Unable to create $OUTDIR/$HOMEFILE\n";
+
+    &print_head(PGFILE, $EDCNAME);
+    if ($ElemDesc{$HomeDesc}) {
+	print PGFILE "<HR>\n";
+	&print_elem_desc(PGFILE, $HomeDesc);
+    }
+    &print_goto_topall(PGFILE);
+    print PGFILE "<HR>\n";
+    &print_info(PGFILE);
+    &print_end(PGFILE);
+    close(PGFILE);
+}
+##---------------------------------------------------------------------------##
+sub write_topelem_page {
+    local(@array);
+
+    open(PGFILE, "> $OUTDIR/$TOPFILE") ||
+	die "Unable to create $OUTDIR/$TOPFILE\n";
+
+    &print_head(PGFILE, "Top Elements in $EDCNAME");
+    @array = &MIFget_top_elements();
+    &print_elem_list(PGFILE, *array);
+    &print_goto_topall(PGFILE);
+    &print_end(PGFILE);
+    close(PGFILE);
+}
+##---------------------------------------------------------------------------##
+sub write_allelem_page {
+    local(@array);
+
+    open(PGFILE, "> $OUTDIR/$ALLFILE") ||
+	die "Unable to create $OUTDIR/$ALLFILE\n";
+
+    &print_head(PGFILE, "All elements in $EDCNAME");
+    @array = &MIFget_elements();
+    &print_elem_list(PGFILE, *array);
+    &print_goto_topall(PGFILE);
+    &print_end(PGFILE);
+    close(PGFILE);
+}
+##---------------------------------------------------------------------------##
+sub write_elem_page {
+    local($elem) = shift @_;
+    local($elem_) = &filename($elem);
+    local(@array, $tmp);
+
+    open(FILE, "> $OUTDIR/$elem_.html") ||
+	die "Unable to create $OUTDIR/$elem_.html\n";
+
+    &print_head(FILE, $elem);
+    &print_elem_desc(FILE, $elem);
+    print FILE "<HR>\n";
+
+    ## Content ##
+    print FILE "<H2>Content</H2>\n";
+    if (&MIFis_elem_empty_rule($elem)) {
+	print FILE "Empty\n<P>\n";
+    } else {
+	@array = sort &MIFget_gen_children($elem);
+	&remove_dups(*array);
+	&print_elem_list(FILE, *array);
+
+	## Inclusions ##
+	@array = sort &MIFget_inc_children($elem);
+	if ($#array >= 0) {
+	    print FILE "<H3>Inclusions</H3>\n";
+	    &remove_dups(*array);
+	    &print_elem_list(FILE, *array);
+	}
+
+	## Exclusions ##
+	@array = sort &MIFget_exc_children($elem);
+	if ($#array >= 0) {
+	    print FILE "<H3>Exclusions</H3>\n";
+	    &remove_dups(*array);
+	    &print_elem_list(FILE, *array);
+	}
+    }
+
+    ## Highest in flow ##
+    print FILE "<HR>\n<P>\n";
+
+    $tmp = $mif_edc'EDObject{$elem};
+    $tmp =~ s/^\s*(.*[^\s])\s*$/\1/;
+    print FILE "Element Type: <STRONG>", $Type{$tmp}, "</STRONG>\n",
+	       "<BR>\n";
+    if (&write_elem_syntax($elem)) {
+	print FILE "See <A HREF=\"$elem_.rule.html\">",
+		   "<STRONG>GENERAL RULE</STRONG></A>\n";
+    } else {
+	print FILE "Empty GENERAL RULE\n";
+    }
+    print FILE "<BR>\n";
+    print FILE "May be highest element in a flow?  <STRONG>",
+	       (&MIFis_elem_high($elem) ? "YES" : "NO"),
+	       "</STRONG>\n";
+    print FILE "<P>\n";
+    print FILE "<HR>\n";
+
+    &print_parent_list(FILE, $elem);
+
+    &print_goto_topall(FILE, $elem);
+    &print_end(FILE);
+    close(FILE);
+}
+##---------------------------------------------------------------------------##
+sub write_elem_syntax {
+    local($elem) = shift @_;
+    local($elem_) = &filename($elem);
+
+    return 0 if &MIFis_elem_empty_rule($elem);
+
+    open(SYNFILE, "> $OUTDIR/$elem_.rule.html") ||
+	die "Unable to create $OUTDIR/$elem.rule.html\n";
+
+    &print_head(SYNFILE, "$elem: <BR>General Rule");
+
+    ## General Rule ##
+    print SYNFILE "<H2>General Rule</H2>\n";
+    @array = &MIFget_gen_children($elem, 1);
+    &print_elem_content(SYNFILE, *array);
+
+    ## Inclusions ##
+    if ($mif_edc'EDInclusions{$elem}) {
+	print SYNFILE "<H3>Inclusions</H3>\n";
+	@array = &MIFget_inc_children($elem, 1);
+	&print_elem_content(SYNFILE, *array);
+    }
+    ## Exclusions ##
+    if ($mif_edc'EDExclusions{$elem}) {
+	print SYNFILE "<H3>Exclusions</H3>\n";
+	@array = &MIFget_exc_children($elem, 1);
+	&print_elem_content(SYNFILE, *array);
+    }
+    print SYNFILE "<P>\n<HR>\n",
+	   "Go Back to <A HREF=\"$elem_.html\">",
+	   "<STRONG>$elem</STRONG></A><P>\n";
+    &print_end(SYNFILE);
+    close(SYNFILE);
+    1;
+}
+##---------------------------------------------------------------------------##
+sub print_elem_content {
+    local($handle, *array) = @_;
+    local($prev, $open, $len, $tmp);
+    local($grpo, $grpc) = ($mif_edc'edc_grpo, $mif_edc'edc_grpc);
+    print $handle "<PRE>\n";
+
+    foreach (@array) {
+	next if $_ =~ /^\s*$/;	    # Ignore NULL strings
+	if ($_ eq $grpo) { 	    # '('
+	    if ($prev eq $_) {		# Print consecutive ('s together
+		print $handle $_;
+	    } else {			# Else, start newline
+		print $handle "\n", ' ' x $open, $_;
+	    }
+	    $open++;			# Increase group open counter
+	    $len = $open+1;		# Adjust length of line counter
+	    next;			# Goto next token
+	} elsif ($_ eq $grpc) {
+	    $open--;			# ')', decrement group open counter
+	}
+	$tmp = $len + length($_);
+	if ($tmp > 70) {	    # Check if line goes past 70 characters
+	    if (&MIFis_occur_indicator($_) || &MIFis_group_connector($_)) {
+		print $handle $_, "\n", ' ' x ($open);
+		$len = $open;
+		next;
+	    } else {
+		print $handle "\n", ' ' x $open;
+		$len = $open + length($_);
+	    }
+	} else {
+	    $len = $tmp;
+	}
+	if (&MIFis_elem_keyword($_)) {	  # Reserved
+	    s/\\>/>/g;
+	    $tmp = &htmlize($_);
+	    print $handle $tmp;
+	} elsif (&MIFis_elem_name($_)) {  # Create anchors for element names
+	    $tmp = &filename($_);
+	    print $handle qq|<A HREF="$tmp.html">$_</A>|;
+	} else {
+	    print $handle $_;
+	}
+    } continue {
+	$prev = $_ unless /^\s*$/;
+    }
+
+    print $handle "</PRE>\n";
+}
+##---------------------------------------------------------------------------##
+sub print_elem_desc {
+    local($handle, $elem) = @_;
+    if ($elem && $ElemDesc{$elem}) {
+	print $handle $ElemDesc{$elem};
+    }
+}
+##---------------------------------------------------------------------------##
+sub print_goto_topall {
+    local($old) = select(shift);
+    local($elem) = shift;
+    local($tmp);
+    print <<End;
+<HR>
+Goto <A HREF="$TOPFILE"><STRONG>Top Element List</STRONG></A>
+<BR>
+Goto <A HREF="$ALLFILE"><STRONG>All Element List</STRONG></A>
+<P>
+Goto <A HREF="$HOMEFILE"><STRONG>$EDCNAME</STRONG></A> home page
+End
+    select($old);
+}
+##---------------------------------------------------------------------------##
+sub print_elem_list {
+    local($handle, *array) = @_;
+    local($tmp);
+    print $handle "<UL COMPACT>\n";
+    foreach (@array) {
+	if (&MIFis_elem_keyword($_)) {
+	    s/\\>/>/g;
+	    $tmp = &htmlize($_);
+	    print $handle qq|<LI>$tmp</LI>\n|;
+	} else {
+	    $tmp = &filename($_);
+	    print $handle qq|<LI><A HREF="$tmp.html">|,
+			  qq|<STRONG>$_</STRONG></A></LI>\n|;
+	}
+    }
+    print $handle "</UL>\n";
+}
+##---------------------------------------------------------------------------##
+sub print_head {
+    local($handle, $title) = @_;
+    local($old) = select($handle);
+    print <<End;
+<HTML>
+<HEAD>
+<TITLE>$title</TITLE>
+</HEAD>
+<BODY>
+<H1>$title</H1>
+End
+    select($old);
+}
+##---------------------------------------------------------------------------##
+sub print_end {
+    local($old) = select(shift);
+    print <<End;
+<HR>
+<ADDRESS>$EDCNAME</ADDRESS><P>
+</BODY>
+</HTML>
+End
+    select($old);
+}
+##---------------------------------------------------------------------------##
+sub print_info {
+    local($old) = select(shift);
+    print <<End;
+<ADDRESS>
+This document was automatically generated by the Perl program
+<A HREF="$DOCURL"><CODE>$PROG</CODE></A>.
+</ADDRESS>
+End
+    select($old);
+}
+##---------------------------------------------------------------------------##
+sub remove_dups {
+    local(*array) = shift;
+    local(%dup);
+    @array = grep($dup{$_}++ < 1, @array);
+}
+##---------------------------------------------------------------------------##
+sub print_elemdesc {
+    local(%attribute, @array, $elem, $attr);
+
+    print STDOUT "<?EDC2HTML $HomeDesc >\n<P>\n";
+    foreach $elem (&MIFget_elements()) {
+	print STDOUT "<?EDC2HTML $elem >\n<P>\n";
+    }
+}
+##---------------------------------------------------------------------------##
+sub print_parent_list {
+    local($handle, $elem) = @_;
+    local(@array, $tmp);
+
+    print $handle "<H2>Parent Elements</H2>\n";
+    @array = &MIFget_parents($elem);
+    if ($#array >= 0) {
+	&remove_dups(*array);
+	print $handle "<UL COMPACT>\n";
+	foreach (@array) {
+	    $tmp = &filename($_);
+	    print $handle qq|<LI><A HREF="$tmp.html">|,
+			  qq|<STRONG>$_</STRONG></A></LI>\n|;
+	}
+	print $handle "</UL>\n";
+    } else {
+	print $handle "None<P>\n";
+    }
+}
+##---------------------------------------------------------------------------##
+sub filename {
+    local($elem) = shift;
+    $elem =~ s/ /,/g;
+    $elem;
+}
+##---------------------------------------------------------------------------##
+sub htmlize {
+    local($tmp) = shift;
+    $tmp =~ s/>/&gt;/g;
+    $tmp =~ s/</&lt;/g;
+    $tmp;
+}
+##---------------------------------------------------------------------------##
+sub usage {
+    print STDOUT <<EndOfUsage;
+Usage: $PROG [<options>] file 
+Options:
+   -careful		: Strip comments out of MIF
+   -allname <filename>	: Filename of All Element List page.
+   -descfile <filename> : Element description file.
+   -docurl <URL>	: URL to $PROG HTML document
+   -edcname <string>	: String name of element catalog for HTML output.
+   -elemlist		: Generate empty element description file.
+   -help		: This message.
+   -homename <filename>	: Filename of Home page.
+   -outdir <path>	: Destination directory for HTML files.
+   -topname <filename>	: Filename of Top Element List page.
+
+Version: $VERSION
+mif.pl Version: $mif'VERSION
+mif_edc.pl Version: $mif_edc'VERSION
+
+EndOfUsage
+    exit 0;
+}
+##---------------------------------------------------------------------------##

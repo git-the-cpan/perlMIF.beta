@@ -1,0 +1,272 @@
+<HTML>
+<HEAD><TITLE>mif.pl Read Routines
+</TITLE>
+</HEAD>
+<BODY>
+<H1><HR><A NAME="26605">Read Routines</A>
+</H1>
+
+       The following routines to read Frame MIF are defined in <A HREF="mif.pl.doc.html#29783">mif.pl</A>:
+<P>
+
+<UL>
+<LI>          main'<A HREF="#19647">MIFread_mif</A>
+</UL>
+<PRE>       
+</PRE>
+
+<DL>
+<DT>          <STRONG>Note</STRONG>: 
+
+<DD>              Remember that <STRONG>ALL</STRONG> Perl variables mentioned are defined within the 
+              scope of package <EM>mif</EM> unless statements state/imply otherwise.
+</DL>
+<HR>
+<H2>Routine Descriptions
+</H2>
+
+<H3><A NAME="19647">MIFread_mif</A>
+</H3>
+
+       <CODE>&amp;'MIFread_mif(</CODE><VAR>FILEHANDLE</VAR><CODE>);</CODE> 
+<P>
+
+       <CODE>MIFread_mif</CODE> handles the parsing of the Frame MIF specified by <VAR>FILEHANDLE</VAR> 
+       and calls token callback routines defined by the caller of <CODE>MIFread_mif</CODE> for each 
+       token encountered in the MIF.
+<P>
+
+<H4>Token Callbacks
+</H4>
+
+       Token callback routines are registered via the <CODE>%mif'MIFToken</CODE> associative array. 
+       The keys of the array are any legal MIF tokens of interest. The values of the array 
+       are the names of the routines to be invoked when key/token is encountered in the 
+       MIF markup.
+<P>
+
+<DL>
+<DT>          <STRONG>Example</STRONG>: 
+
+<DD>              <CODE>$mif'MIFToken{`ParaLine'} = `paragraph_line';</CODE> 
+              When <CODE>MIFread_mif</CODE> encounters a <CODE>ParaLine</CODE>, it will call the routine 
+              <CODE>paragraph_line</CODE>.
+<P></DL>
+<DL>
+<DT>          <STRONG>Note</STRONG>: 
+
+<DD>              Token callbacks are called within the scope of package <EM>mif</EM>. Therefore, if 
+              token routines are defined within the scope of another package, the 
+              routine name should be prefixed with the package qualifier string (Eg. 
+              <CODE>main'paragraph_line</CODE>) when stored in the <CODE>%mif'MIFToken</CODE>.
+</DL>
+<PRE>       
+</PRE>
+
+       A token callback is invoked as follows:
+<P>
+
+       <CODE>&amp;</CODE><VAR>token_func</VAR><CODE>($token, $mode, *data);</CODE> 
+<P>
+
+       Where <VAR>token_func</VAR> is a token routine defined in <CODE>%mif'MIFToken</CODE>.
+<P>
+
+       Argument descriptions:
+<P>
+
+<DL>
+<DT>          <CODE>$token</CODE> 
+
+<DD>              MIF name of token.
+</DL>
+<DL>
+<DT>          <CODE>$mode</CODE> 
+
+<DD>              Flag telling routine if it is being called during a open statement (i.e. token 
+              contains nested MIF statements); token is being closed; or token has 
+              non-MIF statement data.  Each mode is represented by <CODE>$mif'MOpen</CODE>, 
+              <CODE>$mif'MClose</CODE>, <CODE>$mif'MLine</CODE>, respectively.
+</DL>
+<DL>
+<DT>          <CODE>*data</CODE> 
+
+<DD>              Pointer to data string if mode is <CODE>$MLine</CODE>, or <CODE>$MClose</CODE> if the storing option 
+              is in effect.  The data string contains the data content of the token specified 
+              by <CODE>$token</CODE>.  The exception is when storing is done (see <A HREF="#10372">Storing MIF</A> below 
+              for more info).
+</DL>
+<PRE>       
+</PRE>
+
+       The token routine never see the `<CODE>&lt;</CODE>` and `<CODE>&gt;</CODE>' markup delimiters, with the following 
+       exceptions:
+<P>
+
+<UL>
+<LI>          The above characters are in a MIF string.
+<LI>          When in storing mode.
+</UL>
+<PRE>       
+</PRE>
+
+<H4><A NAME="10372">Storing MIF</A>
+</H4>
+
+       <CODE>MIFread_mif</CODE> will store MIF markup if the routine for a token is prefixed by the 
+       value, <CODE>$MStore</CODE>, and the `<CODE>,</CODE>' character.
+<P>
+
+<DL>
+<DT>          <STRONG>Example</STRONG>: 
+
+<DD>              <CODE>$mif'MIFToken{`ParaLine'} = 
+              "$mif'MStore,paragraph_line";</CODE> 
+</DL>
+       The `<CODE>,</CODE>' character is needed to separate the <CODE>$MStore</CODE> string from the routine name.
+<P>
+
+       Once the token closes, the named routine is called with mode <CODE>$MClose</CODE>, and the 
+       <CODE>*data</CODE> argument contains the MIF.  The store routine may also be called if the 
+       token specified does not contain nested MIF or is empty. In this case, <CODE>$MLine</CODE> is 
+       passed as the mode, and the markup delimiters, `<CODE>&lt;</CODE>` and `<CODE>&gt;</CODE>', are not in the <CODE>*data</CODE> 
+       argument string (i.e. The behavior is the same if <CODE>$MStore</CODE> was not specified).
+<P>
+
+<H4>Import Data
+</H4>
+
+       A special token exists for data imported by copy: <CODE>$mif'MImportData</CODE>. If a 
+       routine is registered for this token, than it will be invoked as follows:
+<P>
+
+       <CODE>&amp;</CODE><VAR>token_func</VAR><CODE>($MImportData, $MLine, *data);</CODE> 
+<P>
+
+       Where <CODE>*data</CODE> is a pointer to the string that contains the imported data.  The 
+       imported data is passed "as is", and it is up to the calling routine to process it.
+<P>
+
+<DL>
+<DT>          <STRONG>Warning</STRONG>: 
+
+<DD>              Specifying <CODE>$MStore</CODE> for <CODE>$MImportData</CODE> is not supported since <CODE>*data</CODE> 
+              contains the import data as it appears in the MIF document.  If <CODE>$MStore</CODE> 
+              is used, Perl will cause program termination since it will try to execute the 
+              routine "<CODE>$MStore,$MIFToken{$MImportData}</CODE>".
+</DL>
+<PRE>       
+</PRE>
+
+<H4>Token Stack
+</H4>
+
+       The <CODE>@mif'OpenTokens</CODE> array is updated like a stack by <CODE>MIFread_mif</CODE> telling 
+       which tokens are currently opened. <CODE>MIFread_mif</CODE> will die if a pop is done on an 
+       empty <CODE>@OpenTokens</CODE> (i.e. an extra `<DFN>&gt;</DFN>' was found). One can check the stack after 
+       parsing is done to determine if tokens were not closed.
+<P>
+
+<DL>
+<DT>          <STRONG>Note</STRONG>: 
+
+<DD>              <CODE>MIFread_mif</CODE> is not intended as a MIF validator.  If the routine dies, it 
+              outputs a terse message. For validation, it is best to use 
+              FrameMaker/Builder.
+</DL>
+<PRE>       
+</PRE>
+
+<H4>Behavior Modification
+</H4>
+
+       There are two special variables defined in package mif that can be set to change the 
+       behavior of <CODE>MIFread_mif</CODE>:
+<P>
+
+<DL>
+<DT>          <CODE>$mif'fast</CODE> 
+
+<DD>              If set to a non-zero value, <CODE>MIFread_mif</CODE> will not process `<CODE>#</CODE>' end-of-line 
+              comments.  By default, <CODE>MIFread_mif</CODE> strips out all `<CODE>#</CODE>' comments to avoid 
+              any MIF markup that could be contained in them.  Setting <CODE>$fast</CODE> to 
+              non-zero approximately doubles speed performance.
+</DL>
+<DL>
+<DT>          <CODE>$mif'no_import_data</CODE> 
+
+<DD>              If set to a non-zero value, <CODE>MIFread_mif</CODE> will not check for import data.  
+              This is useful if the MIF file contains no import data.  There is a slight 
+              increase in performance if this variable is set.
+</DL>
+       By default, the both variables are set zero.
+<P>
+
+       In most cases, setting <CODE>$fast</CODE> is safe to do.  If one is parsing MIF generated from 
+       FrameMaker/Builder, the comments in the MIF do not contain markup that will 
+       cause <CODE>MIFread_mif</CODE> behave incorrectly.
+<P>
+
+<DL>
+<DT>          <STRONG>Note</STRONG>: 
+
+<DD>              These variables should be set before <CODE>MIFread_mif</CODE> is invoked.  However, 
+              they can be modified within registered token callbacks.  For example, one 
+              might want to set <CODE>$no_import_data</CODE> to 1 before calling <CODE>MIFread_mif</CODE>. 
+              Then when the "<CODE>AFrames</CODE>" token callback is called with a mode of 
+              <CODE>$MOpen</CODE>, it can set <CODE>$no_import_data</CODE> back to zero so <CODE>MIFread_mif</CODE> will 
+              catch import data.  Then when the "<CODE>AFrames</CODE>" token callback is called 
+              with a mode of <CODE>$MClose</CODE>, it can set <CODE>$no_import_data</CODE> to 1.  The same 
+              thing can be done for "<CODE>Frame</CODE>" tokens.
+</DL>
+<PRE>       
+</PRE>
+
+<H4>Notes
+</H4>
+
+<UL>
+<LI>          <CODE>MIFread_mif</CODE> tries its best to preserve the original formatting (i.e. 
+              indenting) when storing MIF.
+<P><LI>          If a token does not have a callback defined for it, then it, and its data, 
+              (which may include nested MIF statements) are ignored.
+<P><LI>          A token specified for storing causes any nested tokens to be ignored for the 
+              purposes of executing registered token callbacks.  I.e.  If a token has a 
+              registered callback, but the token is in a parent token specified for storing, 
+              the (child) token will not have its routine called.
+<P><LI>          <CODE>&lt;Comment&gt;</CODE> statements are treated like any other MIF statement.  
+              Therefore, if <CODE>&lt;Comment&gt;</CODE>s are embedded in a token specified for storing, 
+              the comments will be preserved.  One can register a token callback for 
+              <CODE>&lt;Comment&gt;</CODE> if desired.
+<P></UL>
+<PRE>       
+</PRE>
+
+<H4>Bugs
+</H4>
+
+<UL>
+<LI>          <CODE>MIFread_mif</CODE> does not handle MIF macro statements.
+<P><LI>          If comments are being stripped and import data is being checked, the 
+              following will occur:
+<P></UL>
+<PRE>         &lt;Token
+         &amp;  # This comment will NOT get removed
+         # This comment will get removed
+         &gt;
+</PRE>
+
+<UL>
+<LI>              <CODE>MIFread_mif</CODE> treats lines starting with `<CODE>&amp;</CODE>' as import data, and therefore, 
+              does not process it.
+</UL>
+<HR>
+       Go back to <A HREF="mif.pl.doc.html#29783">mif.pl</A>.
+<P>
+
+<HR>
+<ADDRESS>       Earl Hood, ehood@convex.com
+</ADDRESS><ADDRESS>       mif.pl 1.0.0
+</ADDRESS>
+</BODY>
+</HTML>
